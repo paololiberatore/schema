@@ -1,0 +1,31 @@
+prima la prova in aula di un'ora, poi una prova al calcolatore che forse
+potrebbe richiedere piu' tempo di quella attuale
+
+l'applicazione usa diverse classi, ma quelle principali sono la classe Autista
+e la classe Automobile, collegate da una associazione 1,* - 1,* a
+responsabilita' doppia
+
+una macchina puo' essere parcheggiata o in attivita'; riceve un messaggio
+dall'autista per passare da uno stato all'altro
+
+l'interfaccia grafica all'avvio mostra la lista degli autisti con auto
+parcheggiate; l'utente ne seleziona uno, e si avvia una attivita' che sceglie
+una macchina libera di quell'autista e poi manda un messaggio all'autista, che
+a sua volta manda un messaggio alla macchina; la risposta e' una conferma che
+l'auto sia funzionante, con l'ora di partenza che viene visualizzata
+
+prova in aula:
+	- schema uml
+	- un diagramma di stati e transizioni della classe Autista
+	- un diagramma delle attivita'
+	- specifiche, ma nessuna implementazione
+
+prova al calcolatore:
+	- interfaccia grafica
+	- classe Autista o Automobile, ma solo l'associazione con l'altra
+	- attivita' di ricerca
+	- classe AutomobileFired
+
+anche della classe AutomobileFired potremmo fornire l'implementazione gia'
+fatta a cui mancano le specifiche transizioni
+
