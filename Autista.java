@@ -1,10 +1,13 @@
+import java.util.logging.Logger;
 import java.util.HashSet;
 
 public class Autista implements Listener {
+	private Logger log;
 	private String nome;
 	private HashSet<LinkAssegnato> automobili;
 
 	public Autista(String nome) {
+		log = Log.creaLogger(Autista.class.toString());
 		this.nome = nome;
 		this.automobili = new HashSet<LinkAssegnato>();
 	}

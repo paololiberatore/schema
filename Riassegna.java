@@ -19,6 +19,7 @@ public class Riassegna implements Runnable {
 	@Override
 	public void run() {
 		Multiplo m;
+		Attendi a;
 		Autista multiplo;
 
 		if (eseguita)
@@ -39,5 +40,9 @@ public class Riassegna implements Runnable {
 		}
 		multiplo = m.getMultiplo();
 		log.info("autista con piu' automobili: " + multiplo);
+
+		a = new Attendi(multiplo);
+		executor.perform(a);
+		log.info("ricevuta conferma");
 	}
 }

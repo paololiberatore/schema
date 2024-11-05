@@ -27,6 +27,7 @@ public class Main {
 			String[] componenti = linea.split("	");
 			a = new Autista(componenti[1]);
 			autisti.add(a);
+			EsecuzioneEnvironment.addListener(a);
 		}
 
 		sc.close();
@@ -51,6 +52,7 @@ public class Main {
 			String[] componenti = linea.split("	");
 			a = new Automobile(componenti[1], componenti[2], Integer.parseInt(componenti[3]));
 			automobili.add(a);
+			EsecuzioneEnvironment.addListener(a);
 		}
 
 		sc.close();
@@ -91,7 +93,7 @@ public class Main {
 		LinkedList<Autista> autisti;
 		LinkedList<Automobile> automobili;
 		Autista multiplo;
-		
+
 		io = Log.creaLogger("io");
 		io.setLevel(Level.INFO);
 		data = Log.creaLogger("data");
@@ -104,12 +106,14 @@ public class Main {
 		leggiAutomobili("automobili.txt", automobili);
 		leggiAssegnato("assegnato.txt", autisti, automobili);
 
+		EsecuzioneEnvironment.attivaListener();
+
 		data.info("AUTISTI");
 		data.info(autisti.toString());
 		data.info("AUTOMOBILI");
 		data.info(automobili.toString());
 
-		data.info("ASSGNATO");
+		data.info("ASSEGNATO");
 		for (Autista a : autisti)
 			data.info(a.getAssegnato().toString());
 
