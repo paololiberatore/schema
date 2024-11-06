@@ -14,6 +14,9 @@ public class AutomobileFired implements Task {
 
 	@Override
 	public void esegui() {
+		boolean risultato;
+		Esito esito;
+
 		if (eseguito)
 			return;
 		eseguito = true;
@@ -30,7 +33,10 @@ public class AutomobileFired implements Task {
 			}
 
 			Listener mittente = this.evento.getMittente();
-			Environment.aggiungiEvento(new Esito(this.automobile, mittente));
+
+			risultato = Math.random() > 0.2;
+			esito = new Esito(this.automobile, mittente, risultato);
+			Environment.aggiungiEvento(esito);
 
 			break;
 		}

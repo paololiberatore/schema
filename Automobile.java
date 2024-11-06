@@ -4,13 +4,12 @@ public class Automobile implements Listener {
 	private String modello;
 	private String targa;
 	private int anno;
-	private HashSet<LinkAssegnato> autisti;
+	private LinkAssegnato assegnato;
 
 	public Automobile(String modello, String targa, int anno) {
 		this.modello = modello;
 		this.targa = targa;
 		this.anno = anno;
-		autisti = new HashSet<LinkAssegnato>();
 	}
 
 	public String getModello() {
@@ -25,8 +24,8 @@ public class Automobile implements Listener {
 		return this.anno;
 	}
 
-	public HashSet<Autista> getAutisti() {
-		return (HashSet<Autista>) this.autisti.clone();
+	public LinkAssegnato getAssegnato() {
+		return this.assegnato;
 	}
 
 	public void inserisciAutista(LinkAssegnato link) {
@@ -36,7 +35,7 @@ public class Automobile implements Listener {
 	public void inserisciPerManagerAssegnato(ManagerAssegnato manager) {
 		if (manager == null)
 			return;
-		this.autisti.add(manager.getLink());
+		this.assegnato = manager.getLink();
 	}
 
 	public void eliminaAutista(LinkAssegnato link) {
@@ -46,7 +45,7 @@ public class Automobile implements Listener {
 	public void eliminaPerManagerAssegnato(ManagerAssegnato manager) {
 		if (manager == null)
 			return;
-		this.autisti.remove(manager.getLink());
+		this.assegnato = null;
 	}
 
 	enum Stato { NORMALE };

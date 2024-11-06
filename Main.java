@@ -92,7 +92,6 @@ public class Main {
 			throws FileNotFoundException, IOException {
 		LinkedList<Autista> autisti;
 		LinkedList<Automobile> automobili;
-		Autista multiplo;
 
 		// log
 
@@ -127,8 +126,8 @@ public class Main {
 
 		// attivita' principale
 
-		Riassegna r = new Riassegna(autisti, automobili);
-		r.run();
+		Assegna a = new Assegna(autisti, automobili, autisti.get(0));
+		a.run();
 
 		EsecuzioneEnvironment.disattivaListener();
 	}

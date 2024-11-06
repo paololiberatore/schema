@@ -1,0 +1,31 @@
+Dati
+
+L'applicazione da progettare serve a una ditta di autonoleggi con autista. Agli
+ogni autista possono assegnate delle automobili. E' di interesse sapere
+l'autista che ha una automobile assegnata, se esiste.
+
+...
+
+Stati e transizioni
+
+L'autista puo' ricevere un evento <i>CediMacchina</i> con cui viene informato
+che deve lasciare l'automobile passata come argomento. Prima di farlo, invia un
+evento <i>Diagnostica</i> all'automobile, la quale esegue una operazione di
+autocontrollo. L'esito e' un booleano che viene comunicato all'autista con un
+evento <i>Esito</i>. L'autista informa dell'esito il mittente dell'evento
+iniziale <i>CediMacchina</i> con un evento <i>ConfermaCessione</i>. Solo a
+questo punto l'autista elimina l'automobile fra quelle a lui associate.
+
+Attivita'
+
+Una attivita' principale e' quella di assegnamento di una macchina ha un
+autista che ne e' privo. Questa attivita' ha come parametri un insieme di
+autisti, di automobili e un autista singolo. Lo scopo e' assegnare una macchina
+all'autista singolo. Una prima sottoattivita' atomica cerca una macchina che
+non e' al momento assegnata e la assegna all'autista. Questa attivita' ritorna
+un valore booleano che indica il successo dell'operazione. In caso di
+insuccesso, viene lanciata una sottoattivita' che cerca un autista con due o
+piu' macchine associate. Ne sceglie uno qualsiasi e gli invia un evento
+<i>CediMacchina</i> passandogli una qualsiasi delle sue macchina. Attende
+quindi l'esito, che ritorna alla attivita' principale.
+

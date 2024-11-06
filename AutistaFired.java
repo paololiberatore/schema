@@ -29,16 +29,21 @@ public class AutistaFired implements Task {
 				Automobile a = cedi.getAutomobile();
 				Environment.aggiungiEvento(new Diagnostica(this.autista, a));
 				this.autista.richiedente = this.evento.getMittente();
+				this.autista.automobile = a;
 
 				log.info(this.autista.stato + " -> " + Autista.Stato.ATTESA);
 				this.autista.stato = Autista.Stato.ATTESA;
 			}
 			break;
 		case ATTESA:
-			if (evento.getClass() == Esito.class) {
+			if (this.evento.getClass() == Esito.class) {
+				Esito e = (Esito) this.evento;
 				ConfermaCessione c;
-				c = new ConfermaCessione(this.autista, this.autista.richiedente);
+				c = new ConfermaCessione(this.autista, this.autista.richiedente, e.getEsito());
 				Environment.aggiungiEvento(c);
+
+				LinkAssegnato l = new LinkAssegnato(this.autista, this.autista.automobile);
+				this.autista.eliminaAutomobile(l);
 
 				log.info(this.autista.stato + " -> " + Autista.Stato.NORMALE);
 				this.autista.stato = Autista.Stato.NORMALE;

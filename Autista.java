@@ -47,6 +47,7 @@ public class Autista implements Listener {
 	}
 
 	Listener richiedente;
+	Automobile automobile;
 
 	@Override
 	public void fired(Evento evento) {

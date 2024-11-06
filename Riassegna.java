@@ -6,12 +6,14 @@ public class Riassegna implements Runnable {
 	private boolean eseguita = false;
 	private TaskExecutor executor = TaskExecutor.getInstance();
 
-	public LinkedList<Autista> autisti;
-	LinkedList<Automobile> automobili;
+	private LinkedList<Autista> autisti;
+	private LinkedList<Automobile> automobili;
+	private Autista ricevente;
 
-	public Riassegna(LinkedList<Autista> autisti, LinkedList<Automobile> automobili) {
+	public Riassegna(LinkedList<Autista> autisti, LinkedList<Automobile> automobili, Autista ricevente) {
 		this.autisti = autisti;
 		this.automobili = automobili;
+		this.ricevente = ricevente;
 		this.log = Log.creaLogger("Riassegna");
 		log.info("creazione Riassegna");
 	}
@@ -39,15 +41,15 @@ public class Riassegna implements Runnable {
 
 		a = new Attendi(multiplo);
 		EsecuzioneEnvironment.addListener(a);
-		// executor.perform(a);
 		a.esegui();
-		/*
-		try {
-			Thread.sleep(Integer.MAX_VALUE);
-		} catch (InterruptedException e) {
-			log.info("attesa interrotta");
+
+		if (a.getEsito()) {
+			Automobile libera;
+			libera = multiplo.getAssegnato().get(0).getAutomobile();
+			Fornisci f = new Fornisci(this.ricevente, libera);
+			executor.perform(f);
 		}
-		*/
+
 		log.info("ricevuta conferma");
 	}
 }
