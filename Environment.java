@@ -1,7 +1,10 @@
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.logging.Logger;
 
 public final class Environment {
+	static Logger log = Log.creaLogger(Environment.class.toString());
+
 	private Environment() {
 	}
 
@@ -19,8 +22,10 @@ public final class Environment {
 	}
 
 	public static void aggiungiEvento(Evento e) {
+		log.info("inserimento evento: " + e);
 		if (e == null)
 			return;
+
 		Listener destinatario = e.getDestinatario();
 		if (destinatario != null
 				&& codeEventiDeiListener.containsKey(destinatario)) {
@@ -44,7 +49,9 @@ public final class Environment {
 
 	public static Evento prossimoEvento(Listener lr)
 			throws InterruptedException {
-		return codeEventiDeiListener.get(lr).take();
+		Evento e = codeEventiDeiListener.get(lr).take();
+		log.info("invio evento: " + e + " -> " + lr);
+		return e;
 	}
 
 	public static void resetListener(EsecuzioneEnvironment e) {

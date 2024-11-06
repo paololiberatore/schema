@@ -1,33 +1,18 @@
+/**
+ * attivita' IO Attendi
+ *
+ * invia un evento ad Autista
+ * aspetta un messaggio
+ *
+ * non e' singleton, dato che durante la sua esecuzione deve essere possibile
+ * eseguire i metodi fired() -> esegui():
+ * lanciare con run() e non con executor.perform(a)
+ */
+
 import java.util.logging.Logger;
 
-/**
- * classe fired per la ricezione di eventi
- */
-class AttendiFired implements Task {
-	private Logger log;
-	private Attendi attendi;
-	private Evento evento;
-
-	public AttendiFired(Attendi attendi, Evento evento) {
-		log = Log.creaLogger(AttendiFired.class.toString());
-		this.attendi = attendi;
-		this.evento = evento;
-	}
-
-	@Override
-	public synchronized void esegui() {
-		if (this.evento.getClass() == ConfermaCessione.class)
-			attendi.attesa.interrupt();
-	}
-}
-
-/**
- * classe attivita'
- * include ricezione eventi, che gira ad AttendiFired
- */
 public class Attendi implements Task, Listener {
 	private Logger log;
-	public Thread attesa;
 	private Autista autista;
 
 	public Attendi(Autista autista) {
@@ -41,25 +26,30 @@ public class Attendi implements Task, Listener {
 	@Override
 	public synchronized void esegui() {
 		// invio evento
-		log.info("invio evento");
-		Environment.aggiungiEvento(new CediMacchina(this, this.autista));
+		Automobile a;
+		a = this.autista.getAssegnato().get(0).getAutomobile();
+		CediMacchina c = new CediMacchina(this, this.autista, a);
+		log.info("evento creato: " + c);
+		Environment.aggiungiEvento(c);
 
-		// attesa risposta
+		// attesa
 		try {
-			log.info("inizio attesa");
+			log.info("wait " + this + " " + Thread.currentThread());
 			this.wait();
 		}
 		catch (InterruptedException e) {
-			log.info("attesa terminata");
+			log.info("wait interrotta" + this + " " + Thread.currentThread());
 		}
+		log.info("attesa terminata " + this + " " + Thread.currentThread());
 	}
 
 	/* 
 	 * listener, ricevitore eventi
 	 */
 	@Override
-	public void fired(Evento evento) {
-		this.attesa.interrupt();
+	public synchronized void fired(Evento evento) {
+		log.info("notify " + this + " " + Thread.currentThread());
+		this.notify();
 	}
 }
 

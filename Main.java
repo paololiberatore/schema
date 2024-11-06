@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 
 public class Main {
-	static Logger io, data;
+	static Logger io, data, eventi;
 
 	public static void leggiAutisti(String filename, LinkedList<Autista> autisti)
 			throws FileNotFoundException, IOException {
@@ -94,10 +94,13 @@ public class Main {
 		LinkedList<Automobile> automobili;
 		Autista multiplo;
 
+		// log
+
 		io = Log.creaLogger("io");
-		io.setLevel(Level.INFO);
 		data = Log.creaLogger("data");
-		io.setLevel(Level.INFO);
+		eventi = Log.creaLogger("eventi");
+
+		// lettura dati
 
 		autisti = new LinkedList<Autista>();
 		automobili = new LinkedList<Automobile>();
@@ -106,19 +109,28 @@ public class Main {
 		leggiAutomobili("automobili.txt", automobili);
 		leggiAssegnato("assegnato.txt", autisti, automobili);
 
-		EsecuzioneEnvironment.attivaListener();
-
 		data.info("AUTISTI");
 		data.info(autisti.toString());
 		data.info("AUTOMOBILI");
 		data.info(automobili.toString());
-
 		data.info("ASSEGNATO");
 		for (Autista a : autisti)
-			data.info(a.getAssegnato().toString());
+			data.info(a.toString() + ": " + a.getAssegnato().toString());
+
+		// gestione eventi
+
+		for (Autista a : autisti) {
+			eventi.info("inserimento listener di: " + a);
+			EsecuzioneEnvironment.addListener(a);
+		}
+		EsecuzioneEnvironment.attivaListener();
+
+		// attivita' principale
 
 		Riassegna r = new Riassegna(autisti, automobili);
 		r.run();
+
+		EsecuzioneEnvironment.disattivaListener();
 	}
 }
 

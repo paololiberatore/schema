@@ -28,10 +28,6 @@ public class Riassegna implements Runnable {
 
 		log.info("run Riassegna");
 
-		for (Autista autista : autisti)
-			log.info(autista.toString());
-
-
 		m = new Multiplo(autisti);
 		executor.perform(m);
 		if (! m.esisteMultiplo()) {
@@ -42,7 +38,17 @@ public class Riassegna implements Runnable {
 		log.info("autista con piu' automobili: " + multiplo);
 
 		a = new Attendi(multiplo);
-		executor.perform(a);
+		EsecuzioneEnvironment.addListener(a);
+		// executor.perform(a);
+		a.esegui();
+		/*
+		try {
+			Thread.sleep(Integer.MAX_VALUE);
+		} catch (InterruptedException e) {
+			log.info("attesa interrotta");
+		}
+		*/
 		log.info("ricevuta conferma");
 	}
 }
+

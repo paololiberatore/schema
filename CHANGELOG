@@ -1,0 +1,4 @@
+06/11/2024:
+	aggiunto metodo EsecuzioneEnvironment.attivaSingolo(Listener listener)
+	per permettere l'esecuzione di listener creati dopo l'attivazione
+

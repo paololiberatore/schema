@@ -1,23 +1,23 @@
 import java.util.logging.Logger;
-import java.util.HashSet;
+import java.util.LinkedList;
 
 public class Autista implements Listener {
 	private Logger log;
 	private String nome;
-	private HashSet<LinkAssegnato> automobili;
+	private LinkedList<LinkAssegnato> automobili;
 
 	public Autista(String nome) {
 		log = Log.creaLogger(Autista.class.toString());
 		this.nome = nome;
-		this.automobili = new HashSet<LinkAssegnato>();
+		this.automobili = new LinkedList<LinkAssegnato>();
 	}
 
 	public String getNome() {
 		return this.nome;
 	}
 
-	public HashSet<LinkAssegnato> getAssegnato() {
-		return (HashSet<LinkAssegnato>) this.automobili.clone();
+	public LinkedList<LinkAssegnato> getAssegnato() {
+		return (LinkedList<LinkAssegnato>) this.automobili.clone();
 	}
 
 	public void inserisciAutomobile(LinkAssegnato link) {
@@ -39,6 +39,14 @@ public class Autista implements Listener {
 			return;
 		this.automobili.remove(manager.getLink());
 	}
+
+	public enum Stato { NORMALE, ATTESA };
+	Stato stato = Stato.NORMALE;
+	public Stato getStato() {
+		return this.stato;
+	}
+
+	Listener richiedente;
 
 	@Override
 	public void fired(Evento evento) {

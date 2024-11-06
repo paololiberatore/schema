@@ -49,6 +49,12 @@ public class Automobile implements Listener {
 		this.autisti.remove(manager.getLink());
 	}
 
+	enum Stato { NORMALE };
+	Stato stato = Stato.NORMALE;
+	public Stato getStato() {
+		return this.stato;
+	}
+
 	@Override
 	public void fired(Evento evento) {
 		TaskExecutor.getInstance().perform(new AutomobileFired(this, evento));
