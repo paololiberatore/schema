@@ -1,10 +1,19 @@
+/**
+ * classe transizioni di Autista
+ *
+ * NORMALE
+ *	CediMacchina(automobile) -> NORMALE / Diagnostica
+ * ATTESA
+ *	Esito(esito) -> NORMALE / ConfermaCessione(esito)
+ */
+
 import java.util.logging.Logger;
 
 public class AutistaFired implements Task {
 	private Logger log;
-	Autista autista;
-	Evento evento;
-	boolean eseguito = false;
+	private Autista autista;
+	private Evento evento;
+	private boolean eseguita = false;
 
 	public AutistaFired(Autista autista, Evento evento) {
 		log = Log.creaLogger(Autista.class.toString());
@@ -14,12 +23,15 @@ public class AutistaFired implements Task {
 
 	@Override
 	public void esegui() {
-		if (eseguito)
-			return;
-		eseguito = true;
-
 		log.info("stato: " + this.autista.getStato());
 		log.info("evento ricevuto: " + this.evento);
+
+		if (eseguita)
+			return;
+		eseguita = true;
+		if (this.evento.getDestinatario() != this.autista &&
+		    this.evento.getDestinatario() != null)
+		    	return;
 
 		switch (this.autista.getStato()) {
 		case NORMALE:
@@ -43,12 +55,18 @@ public class AutistaFired implements Task {
 				Environment.aggiungiEvento(c);
 
 				LinkAssegnato l = new LinkAssegnato(this.autista, this.autista.automobile);
-				this.autista.eliminaAutomobile(l);
+				this.autista.eliminaAssegnato(l);
 
 				log.info(this.autista.stato + " -> " + Autista.Stato.NORMALE);
 				this.autista.stato = Autista.Stato.NORMALE;
 			}
 			break;
 		}
+
+		log.info("fine");
+	}
+
+	public boolean estEseguita() {
+		return eseguita;
 	}
 }

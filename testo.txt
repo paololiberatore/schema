@@ -1,31 +1,40 @@
 Dati
 
 L'applicazione da progettare serve a una ditta di autonoleggi con autista. Agli
-ogni autista possono assegnate delle automobili. E' di interesse sapere
-l'autista che ha una automobile assegnata, se esiste.
+autisti possono assegnate delle automobili. Ogni automobile &egrave; assegnata
+al massimo a un autista. L'unico altro dato di interesse dell'autista &egrave;
+il nome, una stringa. Delle macchina interessa invece anche modello (stringa),
+targa (stringa) e anno di immatricolazione (intero).
 
 ...
 
 Stati e transizioni
 
-L'autista puo' ricevere un evento <i>CediMacchina</i> con cui viene informato
-che deve lasciare l'automobile passata come argomento. Prima di farlo, invia un
-evento <i>Diagnostica</i> all'automobile, la quale esegue una operazione di
-autocontrollo. L'esito e' un booleano che viene comunicato all'autista con un
-evento <i>Esito</i>. L'autista informa dell'esito il mittente dell'evento
-iniziale <i>CediMacchina</i> con un evento <i>ConfermaCessione</i>. Solo a
-questo punto l'autista elimina l'automobile fra quelle a lui associate.
+L'autista pu&ograve; ricevere un evento <i>CediMacchina</i> con cui viene
+informato che deve lasciare l'automobile passata come argomento. Prima di
+farlo, invia un evento <i>Diagnostica</i> all'automobile, la quale esegue una
+operazione di autocontrollo. L'esito &egrave; un booleano che viene comunicato
+all'autista con un evento <i>Esito</i>. L'autista informa dell'esito il
+mittente dell'evento iniziale <i>CediMacchina</i> con un evento
+<i>ConfermaCessione</i>. Solo a questo punto l'autista elimina l'automobile fra
+quelle a lui associate.
 
-Attivita'
+Attivit&agrave;
 
-Una attivita' principale e' quella di assegnamento di una macchina ha un
-autista che ne e' privo. Questa attivita' ha come parametri un insieme di
-autisti, di automobili e un autista singolo. Lo scopo e' assegnare una macchina
-all'autista singolo. Una prima sottoattivita' atomica cerca una macchina che
-non e' al momento assegnata e la assegna all'autista. Questa attivita' ritorna
-un valore booleano che indica il successo dell'operazione. In caso di
-insuccesso, viene lanciata una sottoattivita' che cerca un autista con due o
-piu' macchine associate. Ne sceglie uno qualsiasi e gli invia un evento
-<i>CediMacchina</i> passandogli una qualsiasi delle sue macchina. Attende
-quindi l'esito, che ritorna alla attivita' principale.
+Una attivit&agrave; principale <i>Assegna</i> ha come scopo assegnare una
+macchina a un autista. I suoi parametri sono un insieme di automobili e un
+autista. Una prima sottoattivit&agrave; atomica <i>Libera</i> cerca una
+macchina che non &egrave; al momento assegnata e la assegna all'autista. Questa
+attivit<tt>&agrave; ritorna l'automobile assegnata se la trova. Se non la
+trova, viene lanciata una sottoattivit&agrave; atomica <i>Disponibile</i> che
+cerca una macchina assegnata a un autista che ne ha altre. Questa
+attivit&agrave; ritorna sia la macchina disponibile che il suo attuale autista.
+Se non li trova, l'attivit&agrave; principale termina con la stampa a schermo
+di un messaggio di errore. In caso di successo, partono due flussi paralleli.
+Il primo consiste in una prima attivit&agrave; atomica <i>Cessione</i> che
+invia un evento <i>CediAutomobile</i> all'autista e attende l'evento di
+risposta <i>ConfermaCessione</i>. Nella seconda, viene rilevato e stampato ogni
+secondo lo stato dell'autista fino a che non torna nello stato <i>Normale</i>.
+Quando entrambe le attivit&agrave; terminano, la macchina viene assegnata al
+nuovo autista dall'attivit&agrave; atomica <tt>Fornisci</tt>.
 

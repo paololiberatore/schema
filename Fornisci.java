@@ -1,4 +1,8 @@
-import java.util.LinkedList;
+/**
+ * attivita' atomica Fornisci
+ * assegna la macchina all'autista
+ */
+
 import java.util.logging.Logger;
 
 public class Fornisci implements Task {
@@ -12,17 +16,17 @@ public class Fornisci implements Task {
 		this.autista = autista;
 		this.automobile = automobile;
 		this.log = Log.creaLogger("Fornisci");
-		log.info("creazione Fornisci");
+		log.info("creazione");
 	}
 
 	@Override
-	public void esegui() {
+	public synchronized void esegui() {
 		if (eseguita)
 			return;
 		eseguita = true;
 
-		log.info("run Fornisci");
-
-		this.autista.inserisciAutomobile(new LinkAssegnato(autista, automobile));
+		log.finest("inizio");
+		this.autista.inserisciAssegnato(new LinkAssegnato(autista, automobile));
+		log.finest("fine");
 	}
 }

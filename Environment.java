@@ -50,7 +50,10 @@ public final class Environment {
 	public static Evento prossimoEvento(Listener lr)
 			throws InterruptedException {
 		Evento e = codeEventiDeiListener.get(lr).take();
-		log.info("invio evento: " + e + " -> " + lr);
+		if (e.getClass() != Stop.class)
+			log.info("prossimo evento: " + e);
+		else
+			log.info("prossimo evento: Stop -> " + lr);
 		return e;
 	}
 

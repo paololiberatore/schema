@@ -32,6 +32,7 @@ public final class EsecuzioneEnvironment { //NB con final non si possono definir
 		t = new Thread(new EsecuzioneListener(listener));
 		listenerAttivi.put(listener, t);
 		listenerAttivi.get(listener).start();
+		listenerAttivi.get(listener).setName("Thread di " + listener.toString());
 		log.info(listener + ": " + t);
 	}
 
@@ -52,6 +53,7 @@ public final class EsecuzioneEnvironment { //NB con final non si possono definir
 			while (i.hasNext()) {
 				Listener l = i.next();
 				listenerAttivi.get(l).start();
+				listenerAttivi.get(l).setName("Thread di " + l.toString());
 			}
 			log.info("tutti i listener attivati");
 		}
@@ -63,7 +65,7 @@ public final class EsecuzioneEnvironment { //NB con final non si possono definir
 	public static synchronized void disattivaListener() {
 		if (statocorrente == Stato.Esecuzione) {
 			statocorrente = Stato.Attesa;
-			System.out.println("Ora fermiano i listener");
+			log.info("arresto di tutti i listener");
 			Environment.aggiungiEvento(new Stop(null, null));
 			Iterator<Listener> it = listenerAttivi.keySet().iterator();
 			while (it.hasNext()) {

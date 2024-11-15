@@ -1,3 +1,11 @@
+/**
+ * classe dati Automobile
+ *	- modello
+ *	- targa
+ *	- anno
+ *	- singolo autista assegnato
+ */
+
 import java.util.HashSet;
 
 public class Automobile implements Listener {
@@ -28,8 +36,9 @@ public class Automobile implements Listener {
 		return this.assegnato;
 	}
 
-	public void inserisciAutista(LinkAssegnato link) {
-		ManagerAssegnato.inserisciLink(link);
+	public void inserisciAssegnato(LinkAssegnato link) {
+		if (link != null && link.getAutomobile() == this)
+			ManagerAssegnato.inserisciLink(link);
 	}
 
 	public void inserisciPerManagerAssegnato(ManagerAssegnato manager) {
@@ -38,8 +47,9 @@ public class Automobile implements Listener {
 		this.assegnato = manager.getLink();
 	}
 
-	public void eliminaAutista(LinkAssegnato link) {
-		ManagerAssegnato.inserisciLink(link);
+	public void eliminaAssegnato(LinkAssegnato link) {
+		if (link != null && link.getAutomobile() == this)
+			ManagerAssegnato.inserisciLink(link);
 	}
 
 	public void eliminaPerManagerAssegnato(ManagerAssegnato manager) {
@@ -48,7 +58,7 @@ public class Automobile implements Listener {
 		this.assegnato = null;
 	}
 
-	enum Stato { NORMALE };
+	public static enum Stato { NORMALE };
 	Stato stato = Stato.NORMALE;
 	public Stato getStato() {
 		return this.stato;

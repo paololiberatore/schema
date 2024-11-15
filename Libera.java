@@ -1,17 +1,23 @@
-import java.util.LinkedList;
+/*
+ * attivita' atomica Libera(autisti, automobili)
+ *
+ * se trova una macchina non assegnata, la assegna all'autista
+ */
+
+import java.util.HashSet;
 import java.util.logging.Logger;
 
 public class Libera implements Task {
-	static Logger log;
+	private static Logger log;
 	private boolean eseguita = false;
 	private TaskExecutor executor = TaskExecutor.getInstance();
 
-	private LinkedList<Automobile> automobili;
+	private HashSet<Automobile> automobili;
 	private Autista autista;
 
-	private boolean esito;
+	private Automobile automobile;
 
-	public Libera(LinkedList<Automobile> automobili, Autista autista) {
+	public Libera(HashSet<Automobile> automobili, Autista autista) {
 		this.automobili = automobili;
 		this.autista = autista;
 		this.log = Log.creaLogger("Libera");
@@ -20,31 +26,36 @@ public class Libera implements Task {
 
 	@Override
 	public synchronized void esegui() {
+		log.info("run Libera");
+
 		if (eseguita)
 			return;
 		eseguita = true;
 
-		log.info("run Libera");
+		this.automobile = null;
 
 		for (Automobile a : automobili) {
 			if (a.getAssegnato() == null) {
 				LinkAssegnato l;
 				l = new LinkAssegnato(this.autista, a);
-				this.autista.inserisciAutomobile(l);
-				esito = true;
+				this.autista.inserisciAssegnato(l);
+				this.automobile = a;
 				log.info("macchina assegnata: " + a);
 				return;
 			}
 		}
 
 		log.info("nessuna macchina libera");
-		esito = false;
 	}
 
-	public boolean getEsito() {
+	public boolean estEseguita() {
+		return this.eseguita;
+	}
+
+	public Automobile getAutomobile() {
 		if (! eseguita)
 			throw new RuntimeException("Libera non eseguita");
-		return this.esito;
+		return this.automobile;
 	}
 }
 

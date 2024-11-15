@@ -1,27 +1,31 @@
-import java.util.logging.Logger;
-import java.util.LinkedList;
+/**
+ * classe dati Autista
+ *	- nome
+ *	- lista di auto assegnate
+ */
+
+import java.util.HashSet;
 
 public class Autista implements Listener {
-	private Logger log;
 	private String nome;
-	private LinkedList<LinkAssegnato> automobili;
+	private HashSet<LinkAssegnato> automobili;
 
 	public Autista(String nome) {
-		log = Log.creaLogger(Autista.class.toString());
 		this.nome = nome;
-		this.automobili = new LinkedList<LinkAssegnato>();
+		this.automobili = new HashSet<LinkAssegnato>();
 	}
 
 	public String getNome() {
 		return this.nome;
 	}
 
-	public LinkedList<LinkAssegnato> getAssegnato() {
-		return (LinkedList<LinkAssegnato>) this.automobili.clone();
+	public HashSet<LinkAssegnato> getAssegnato() {
+		return (HashSet<LinkAssegnato>) this.automobili.clone();
 	}
 
-	public void inserisciAutomobile(LinkAssegnato link) {
-		ManagerAssegnato.inserisciLink(link);
+	public void inserisciAssegnato(LinkAssegnato link) {
+		if (link != null && link.getAutista() == this)
+			ManagerAssegnato.inserisciLink(link);
 	}
 
 	public void inserisciPerManagerAssegnato(ManagerAssegnato manager) {
@@ -30,8 +34,9 @@ public class Autista implements Listener {
 		this.automobili.add(manager.getLink());
 	}
 
-	public void eliminaAutomobile(LinkAssegnato link) {
-		ManagerAssegnato.eliminaLink(link);
+	public void eliminaAssegnato(LinkAssegnato link) {
+		if (link != null && link.getAutista() == this)
+			ManagerAssegnato.eliminaLink(link);
 	}
 
 	public void eliminaPerManagerAssegnato(ManagerAssegnato manager) {
