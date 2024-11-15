@@ -1,0 +1,21 @@
+l'interfaccia grafica scarica dal server le automobili e gli autisti e li
+visualizza; l'utente sceglie un autista, e invia una richiesta al server
+
+il server lancia l'attivita' principale Assegna, che cerca una macchina libera
+da assegnare all'autista
+
+Assegna:
+	Libera		assegna macchina non gia' assegnata
+
+	Disponibile	cerca macchina assegnata a un autista che ne ha altre
+
+	thread:
+	Cessione   ---CediMacchina-->  Autista
+		                       Autista   ---Diagnostica-->   Automobile
+		                       Autista <--ConfermaCessione-- Automobile
+	        <--ConfermaCessione---
+	Verifica
+	join
+
+	Fornisci
+
