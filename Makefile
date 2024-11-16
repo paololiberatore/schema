@@ -15,7 +15,7 @@ Log.class \
 \
 classi.jpg stati.jpg attivita.jpg
 
-all: ${CLASS}
+all: ${CLASS} README.html
 
 %.class: %.java
 	javac $<
@@ -23,6 +23,9 @@ all: ${CLASS}
 %.jpg: %.fig
 	fig2dev -L jpeg $< > $@
 
+%.html: %.md
+	md2html $< > $@
+
 clean:
-	rm -f ${CLASS} *.class *.bak
+	rm -f ${CLASS} *.class *.bak README.html
 

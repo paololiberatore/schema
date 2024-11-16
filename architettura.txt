@@ -5,7 +5,7 @@ il server lancia l'attivita' principale Assegna, che cerca una macchina libera
 da assegnare all'autista
 
 Assegna:
-	Libera		assegna macchina non gia' assegnata
+	Libera		assegna macchina non assegnata
 
 	Disponibile	cerca macchina assegnata a un autista che ne ha altre
 
