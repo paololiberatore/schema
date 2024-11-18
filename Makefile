@@ -7,7 +7,7 @@ Cessione.class Verifica.class Fornisci.class \
 \
 CediMacchina.class Diagnostica.class Esito.class ConfermaCessione.class \
 \
-Client.class Server.class Main.class DB.class \
+Client.class ClientListener.class Server.class Main.class DB.class \
 \
 Task.class TaskExecutor.class Evento.class Listener.class \
 Environment.class EsecuzioneEnvironment.class EsecuzioneListener.class \

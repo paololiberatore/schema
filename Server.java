@@ -27,29 +27,39 @@ class ServerThread implements Runnable {
 			PrintWriter pr = new PrintWriter(this.s.getOutputStream());
 			Scanner sc = new Scanner(this.s.getInputStream());
 
+			log.info("ciclo di lettura");
 			while (sc.hasNextLine()) {
 				String line = sc.nextLine();
+				String[] campi = line.split(":");
+				Autista autista = null;
 
-				if (line.equals("autisti")) {
-					for (Autista a : autisti)
-						pr.println(a);
-					pr.println("---");
+				log.info("comando: " + line);
+
+				if (campi[0].equals("autisti")) {
+					for (Autista a : autisti) {
+						pr.println(a.getNome());
+						log.info("inviato: " + a.getNome());
+					}
+					pr.println("END");
 					pr.flush();
 				}
-				else if (line.equals("assegna")) {
-					int indice;
-					indice = sc.nextInt();
-					if (indice < 0 || indice >= autisti.size()) {
-						pr.println("ERROR");
+				else if (campi[0].equals("assegna")) {
+					for (Autista a : autisti) {
+						if (a.getNome().equals(campi[1])) {
+							autista = a;
+							break;
+						}
+					}
+
+					if (autista == null) {
+						pr.println("NON TROVATO");
 						pr.flush();
 						break;
 					}
-					pr.println(autisti.get(indice));
+					pr.println(autista);
 					pr.flush();
 
-					Autista nuovo = autisti.get(indice);
-
-					Assegna a = new Assegna(new HashSet(automobili), nuovo);
+					Assegna a = new Assegna(new HashSet(automobili), autista);
 					a.run();
 
 					if (a.getAutomobile() == null) {
@@ -57,19 +67,16 @@ class ServerThread implements Runnable {
 						pr.flush();
 					}
 					pr.println(a.getAutomobile());
-					pr.println("---");
+					pr.println("END");
 					pr.flush();
-					break;
 				}
 				else {
-					pr.println("ERROR");
+					pr.println("ERRORE");
 					pr.flush();
 					break;
 				}
 			}
 
-			sc.close();
-			s.close();
 		}
 		catch (IOException e) {
 			e.printStackTrace();
@@ -81,11 +88,17 @@ public class Server {
 	private static Logger data, eventi, server;
 
 	public static void main(String[] args) throws IOException {
+		boolean single = false;
+
 		data = Log.creaLogger("data");
 		eventi = Log.creaLogger("eventi");
 		server = Log.creaLogger("server");
 
 		server.finest("inizio");
+
+		if (args.length >= 1 && args[0].equals("-s"))
+			single = true;
+		data.info("single: " + single);
 
 		// lettura dati
 
@@ -138,13 +151,15 @@ public class Server {
 			ServerThread st = new ServerThread(s, autisti, automobili);
 			Thread t = new Thread(st);
 			t.start();
-			try {
-				t.join();
+			if (single) {
+				try {
+					t.join();
+				}
+				catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				break;
 			}
-			catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			break;
 		}
 
 		EsecuzioneEnvironment.disattivaListener();
