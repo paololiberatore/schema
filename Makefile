@@ -27,5 +27,5 @@ all: ${CLASS} README.html
 	md2html $< > $@
 
 clean:
-	rm -f ${CLASS} *.class *.bak README.html
+	rm -f ${CLASS} *.class *.bak README.html link
 
