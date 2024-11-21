@@ -28,7 +28,7 @@ public class DB {
 
 		io.info("leggiAutisti(" + filename + ")");
 
-		fr = new FileReader(filename);
+		fr = new FileReader("db/" + filename);
 		sc = new Scanner(fr);
 
 		while (sc.hasNextLine()) {
@@ -53,7 +53,7 @@ public class DB {
 
 		io.info("leggiAutomobili(" + filename + ")");
 
-		fr = new FileReader(filename);
+		fr = new FileReader("db/" + filename);
 		sc = new Scanner(fr);
 
 		while (sc.hasNextLine()) {
@@ -81,7 +81,7 @@ public class DB {
 
 		io.info("leggiAssegnato(" + filename + ")");
 
-		fr = new FileReader(filename);
+		fr = new FileReader("db/" + filename);
 		sc = new Scanner(fr);
 
 		while (sc.hasNextLine()) {
