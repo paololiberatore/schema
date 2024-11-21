@@ -29,6 +29,7 @@ public class Main {
 		autisti = new LinkedList<Autista>();
 		automobili = new LinkedList<Automobile>();
 
+		DB.log();
 		DB.leggiAutisti("autisti.txt", autisti);
 		DB.leggiAutomobili("automobili.txt", automobili);
 		DB.leggiAssegnato("assegnato.txt", autisti, automobili);
